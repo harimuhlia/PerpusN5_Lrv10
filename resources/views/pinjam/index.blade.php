@@ -171,7 +171,7 @@
                                     </td>
 
                                     {{-- DENDA --}}
-                                    <td class="px-6 py-4 text-center">
+                                    {{-- <td class="px-6 py-4 text-center">
 
                                         @if($item->denda > 0)
                                             <span class="text-red-600 font-bold">
@@ -179,6 +179,52 @@
                                             </span>
                                         @else
                                             <span class="text-gray-500">-</span>
+                                        @endif
+
+                                    </td> --}}
+
+                                    {{-- DENDA --}}
+                                    <td class="px-6 py-4 text-center">
+
+                                        @php
+                                            $denda = 0;
+
+                                            // hanya hitung jika status dipinjam
+                                            if($item->status == 'dipinjam') {
+
+                                                $today = \Carbon\Carbon::now();
+
+                                                $tanggalKembali = \Carbon\Carbon::parse($item->tanggal_kembali);
+
+                                                if($today->gt($tanggalKembali)) {
+
+                                                    $hariTelat = $tanggalKembali->diffInDays($today);
+
+                                                    $denda = $hariTelat * 1000;
+                                                }
+
+                                            }
+
+                                            // jika sudah dikembalikan
+                                            elseif($item->status == 'dikembalikan') {
+
+                                                $denda = $item->denda;
+
+                                            }
+                                        @endphp
+
+                                        @if($denda > 0)
+
+                                            <span class="text-red-600 font-bold">
+                                                Rp {{ number_format($denda, 0, ',', '.') }}
+                                            </span>
+
+                                        @else
+
+                                            <span class="text-gray-500">
+                                                -
+                                            </span>
+
                                         @endif
 
                                     </td>

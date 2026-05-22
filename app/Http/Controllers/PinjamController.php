@@ -104,14 +104,25 @@ class PinjamController extends Controller
     {
         $pinjam = Pinjam::findOrFail($id);
 
+        // hanya buku dipinjam yang bisa dikembalikan
+        if ($pinjam->status != 'dipinjam') {
+
+            return back()->with('error', 'Buku tidak sedang dipinjam');
+        }
+
         $today = Carbon::now();
+
         $tanggalKembali = Carbon::parse($pinjam->tanggal_kembali);
 
         $denda = 0;
 
         if ($today->gt($tanggalKembali)) {
+
             $selisihHari = $tanggalKembali->diffInDays($today);
-            $denda = $selisihHari * 1000;
+
+            $dendaPerHari = 1000;
+
+            $denda = $selisihHari * $dendaPerHari;
         }
 
         $pinjam->update([
@@ -120,11 +131,37 @@ class PinjamController extends Controller
             'tanggal_dikembalikan' => $today,
         ]);
 
-        $pinjam->buku->increment('stok', $pinjam->jumlah);
+        $pinjam->buku->increment('stok');
 
         return redirect()->route('pinjam.index')
             ->with('success', 'Buku dikembalikan. Denda: Rp ' . number_format($denda));
     }
+
+    // public function kembalikan($id)
+    // {
+    //     $pinjam = Pinjam::findOrFail($id);
+
+    //     $today = Carbon::now();
+    //     $tanggalKembali = Carbon::parse($pinjam->tanggal_kembali);
+
+    //     $denda = 0;
+
+    //     if ($today->gt($tanggalKembali)) {
+    //         $selisihHari = $tanggalKembali->diffInDays($today);
+    //         $denda = $selisihHari * 1000;
+    //     }
+
+    //     $pinjam->update([
+    //         'status' => 'dikembalikan',
+    //         'denda' => $denda,
+    //         'tanggal_dikembalikan' => $today,
+    //     ]);
+
+    //     $pinjam->buku->increment('stok', $pinjam->jumlah);
+
+    //     return redirect()->route('pinjam.index')
+    //         ->with('success', 'Buku dikembalikan. Denda: Rp ' . number_format($denda));
+    // }
 
     public function destroy($id)
     {

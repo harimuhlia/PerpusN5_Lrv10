@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\RakController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\KatalogController;
+use App\Http\Controllers\LaporanPeminjamanController;
 use App\Http\Controllers\PinjamController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PengembalianController;
@@ -119,6 +120,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('pengembalian.cari');
     Route::put('/pengembalian/{id}/proses', [PengembalianController::class, 'proses'])
         ->name('pengembalian.proses');
+
+    Route::get('/laporan/peminjaman',
+        [LaporanPeminjamanController::class, 'index'])
+        ->name('laporan.peminjaman');
+
+    Route::get('/laporan/peminjaman/pdf',
+        [LaporanPeminjamanController::class, 'pdf'])
+        ->name('laporan.peminjaman.pdf');
+
+    Route::get('/laporan/peminjaman/excel',
+        [LaporanPeminjamanController::class, 'excel'])
+        ->name('laporan.peminjaman.excel');
 
 });
 

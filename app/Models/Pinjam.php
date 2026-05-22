@@ -19,7 +19,7 @@ class Pinjam extends Model
         'tanggal_pinjam',
         'durasi_pinjam',
         'tanggal_kembali',
-        'status', 'jumlah', 'kelas_id',
+        'status', 'jumlah', 'kelas_id', 'denda',
     ];
 
     public function user()
@@ -37,14 +37,43 @@ class Pinjam extends Model
         return $this->belongsTo(Buku::class);
     }
 
+    // public function getDendaOtomatisAttribute()
+    // {
+    //     if ($this->status == 'dikembalikan') {
+    //         return $this->denda; // dari database
+    //     }
+
+    //     $telat = Carbon::now()->diffInDays($this->tanggal_kembali, false);
+
+    //     return $telat < 0 ? abs($telat) * 1000 : 0;
+    // }
+
     public function getDendaOtomatisAttribute()
     {
-        if ($this->status == 'dikembalikan') {
-            return $this->denda; // dari database
+        // jika status dipinjam → hitung realtime
+        if ($this->status == 'dipinjam') {
+
+            $today = Carbon::now();
+
+            $tanggalKembali = Carbon::parse($this->tanggal_kembali);
+
+            if ($today->gt($tanggalKembali)) {
+
+                $hariTelat = $tanggalKembali->diffInDays($today);
+
+                $dendaPerHari = 1000;
+
+                return $hariTelat * $dendaPerHari;
+            }
         }
 
-        $telat = Carbon::now()->diffInDays($this->tanggal_kembali, false);
+        // jika sudah dikembalikan
+        if ($this->status == 'dikembalikan') {
 
-        return $telat < 0 ? abs($telat) * 1000 : 0;
+            return $this->denda;
+        }
+
+        // pending / dibatalkan
+        return 0;
     }
 }

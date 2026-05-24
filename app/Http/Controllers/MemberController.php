@@ -178,30 +178,47 @@ class MemberController extends Controller
             ->with('success', 'Data berhasil dihapus permanen');
     }
 
+    // public function kartu($id)
+    // {
+    //     $member = User::with('kelas')->findOrFail($id);
+
+    //     $pdf = Pdf::loadView('member.kartu', compact('member'))
+    //         ->setPaper([0, 0, 242.64, 153.36], 'landscape');
+
+    //     return $pdf->stream('kartu-member.pdf');
+    // }
+
+    // public function cetakMasal(Request $request)
+    // {
+    //     $request->validate([
+    //         'member_ids' => 'required'
+    //     ]);
+
+    //     $member = User::with('kelas')
+    //         ->whereIn('id', $request->member_ids)
+    //         ->get();
+
+    //     $pdf = Pdf::loadView('member.kartu-masal', compact('member'))
+    //         ->setPaper('A4', 'portrait');
+
+    //     return $pdf->stream('kartu-member-masal.pdf');
+    // }
+
     public function kartu($id)
     {
-        $member = User::with('kelas')->findOrFail($id);
+        $member = User::with('kelas')
+                    ->findOrFail($id);
 
-        $pdf = Pdf::loadView('member.kartu', compact('member'))
-            ->setPaper([0, 0, 242.64, 153.36], 'landscape');
-
-        return $pdf->stream('kartu-member.pdf');
+        return view('member.kartu', compact('member'));
     }
 
-    public function cetakMasal(Request $request)
+    public function cetakMasal()
     {
-        $request->validate([
-            'member_ids' => 'required'
-        ]);
+        $member = User::where('role', 'anggota')
+                    ->orderBy('name')
+                    ->get();
 
-        $member = User::with('kelas')
-            ->whereIn('id', $request->member_ids)
-            ->get();
-
-        $pdf = Pdf::loadView('member.kartu-masal', compact('member'))
-            ->setPaper('A4', 'portrait');
-
-        return $pdf->stream('kartu-member-masal.pdf');
+        return view('member.kartu-masal', compact('member'));
     }
 
 }

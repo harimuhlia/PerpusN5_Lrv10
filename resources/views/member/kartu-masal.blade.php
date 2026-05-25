@@ -1,67 +1,106 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <meta charset="utf-8">
+
     <title>Kartu Member Masal</title>
 
     <style>
 
-        @page{
-            size: A4;
-            margin: 10mm;
+        @media print{
+            @page{
+                size: A4 portrait;
+                margin: 10mm;
+            }
+
+            body{
+                margin: 0;
+            }
         }
 
         body{
             font-family: Arial, sans-serif;
+            background: #f3f4f6;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
 
         .judul{
             text-align: center;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #2563eb;
         }
 
         .subjudul{
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* TOMBOL PRINT */
+        .print-box{
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        /* 2 KOLOM */
+        .btn-print{
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-print:hover{
+            background: #1d4ed8;
+        }
+
+        /* CONTAINER */
         .container{
             width: 100%;
             font-size: 0;
         }
 
+        /* CARD */
         .card{
             width: 48%;
-            border: 1px solid #000;
-            border-radius: 10px;
-            padding: 8px;
-            margin-bottom: 10px;
             display: inline-block;
             vertical-align: top;
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 12px;
             box-sizing: border-box;
-            page-break-inside: avoid;
+            background: #fff;
             font-size: 12px;
-            min-height: 150px;
+            min-height: 155px;
+            page-break-inside: avoid;
         }
 
-        /* kasih jarak antar kolom */
+        /* CARD KIRI */
         .card:nth-child(odd){
             margin-right: 4%;
         }
 
+        /* HEADER */
         .header{
             text-align: center;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 14px;
             margin-bottom: 8px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            color: #2563eb;
         }
 
+        /* TABLE */
         table{
             width: 100%;
             border-collapse: collapse;
@@ -80,41 +119,79 @@
 
         .row{
             font-size: 11px;
-            margin-bottom: 4px;
-            line-height: 1.4;
+            margin-bottom: 5px;
+            line-height: 1.5;
+            word-break: break-word;
         }
 
         .label{
             font-weight: bold;
         }
 
-        .photo-box{
-            width: 60px;
-            height: 75px;
-            border: 1px solid #000;
-            border-radius: 4px;
-            margin: auto;
-            overflow: hidden;
-        }
+        /* FOTO */
+.foto{
+    width: 25%;
+    text-align: left;
+    vertical-align: top;
+    padding-top: 8px;
+}
 
-        .photo-box img{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.photo-box{
+    width: 90px;
+    height: 95px;
 
+    margin-left: -8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+        /* FOOTER */
         .footer{
             margin-top: 8px;
             font-size: 10px;
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.4;
+            border-top: 1px dashed #ccc;
+            padding-top: 5px;
+            color: #555;
+        }
+
+        /* HILANGKAN TOMBOL SAAT PRINT */
+        @media print{
+            .print-box{
+                display: none;
+            }
+
+            body{
+                background: white;
+                padding: 0;
+            }
         }
 
     </style>
 
 </head>
+
 <body>
 
+    {{-- BUTTON PRINT --}}
+    <div class="print-box">
+
+        <button onclick="window.print()" class="btn-print">
+            Print / Save PDF
+        </button>
+
+    </div>
+
+    {{-- JUDUL --}}
     <div class="judul">
         KARTU MEMBER PERPUSTAKAAN
     </div>
@@ -123,19 +200,24 @@
         Data Kartu Anggota Perpustakaan Sekolah
     </div>
 
+    {{-- CONTAINER --}}
     <div class="container">
 
         @foreach($member as $item)
 
             <div class="card">
 
+                {{-- HEADER --}}
                 <div class="header">
                     KARTU MEMBER
                 </div>
 
+                {{-- CONTENT --}}
                 <table>
+
                     <tr>
 
+                        {{-- DATA --}}
                         <td class="data">
 
                             <div class="row">
@@ -165,13 +247,19 @@
 
                         </td>
 
+                        {{-- FOTO --}}
                         <td class="foto">
 
                             <div class="photo-box">
 
                                 @if($item->photo)
-                                    {{-- <img src="{{ public_path('storage/'.$item->photo) }}"> --}}
-                                    <img src="{{ public_path('storage/logo/logon5.png') }}">
+
+                                    <img src="{{ asset('storage/'.$item->photo) }}">
+
+                                @else
+
+                                    <img src="{{ asset('storage/logo/logon5.png') }}">
+
                                 @endif
 
                             </div>
@@ -179,11 +267,16 @@
                         </td>
 
                     </tr>
+
                 </table>
 
+                {{-- FOOTER --}}
                 <div class="footer">
-                    Perpustakaan Sekolah<br>
+
+                    Perpustakaan Sekolah
+                    <br>
                     Berlaku selama menjadi anggota
+
                 </div>
 
             </div>
@@ -193,4 +286,5 @@
     </div>
 
 </body>
+
 </html>

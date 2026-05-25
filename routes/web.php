@@ -13,6 +13,7 @@ use App\Http\Controllers\LaporanPeminjamanController;
 use App\Http\Controllers\PinjamController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +27,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [FrontController::class, 'index']);
+Route::get('/detail-buku/{id}',[FrontController::class, 'detailBuku'])
+    ->name('front.detail-buku');
 
 Route::get('/redirect', function () {
     if (auth()->user()->role == 'admin') {

@@ -39,7 +39,7 @@
 
                 @auth
 
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('anggota.dashboard') }}"
                        class="inline-flex items-center px-5 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-medium transition shadow-sm">
 
                         📚 Dashboard Anggota

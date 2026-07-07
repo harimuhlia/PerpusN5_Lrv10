@@ -39,11 +39,19 @@
 
                     @auth
 
+                        @if (Auth()->user()->role == 'admin')
+                        <a href="{{ route('dashboard') }}"
+                           class="inline-flex items-center px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition shadow-sm">
+
+                            Dashboard
+                        </a>
+                        @elseif (Auth()->user()->role == 'anggota')
                         <a href="{{ route('anggota.dashboard') }}"
                            class="inline-flex items-center px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition shadow-sm">
 
                             Dashboard
                         </a>
+                        @endif
 
                     @else
 

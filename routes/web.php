@@ -213,8 +213,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('pinjam.restore');
     Route::delete('/pinjam/{id}/force-delete', [PinjamController::class, 'forceDelete'])
         ->name('pinjam.forceDelete');
-    // Route::get('/create', [PeminjamanManualController::class, 'create'])
-    //     ->name('peminjaman-manual.create');
+
+    Route::get('/kontak', function () {return view('kontak.index');})->name('kontak.index');
 });
 
 // ADMIN

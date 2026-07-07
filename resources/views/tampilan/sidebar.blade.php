@@ -132,7 +132,7 @@
         </li>
           <li class="nav-item has-treeview"> 
           @if (Auth()->user()->role == 'admin')       
-          <a href="#" class="nav-link {{ (request()->is('pembayaran-denda*','create*','pinjam*', 'laporan*')) ? 'active' : '' }}">
+          <a href="#" class="nav-link {{ (request()->is('peminjaman-manual*','pembayaran-denda*','create*','pinjam*', 'laporan*')) ? 'active' : '' }}">
             <i class="fa fa-check"></i>
             <p>
               Transaksi
@@ -141,7 +141,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('pinjam.index') }}" class="nav-link {{ (request()->is('pinjam*')) ? 'active' : '' }}">
+              <a href="{{ route('pinjam.index') }}" class="nav-link {{ (request()->is('peminjaman-manual*','pinjam*')) ? 'active' : '' }}">
                 <i class="fas fa-angle-right"></i>
                 <p>Peminjaman</p>
               </a>

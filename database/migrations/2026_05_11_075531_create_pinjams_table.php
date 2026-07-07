@@ -39,7 +39,7 @@ return new class extends Migration
 
         $table->foreign('buku_id')
             ->references('id')
-            ->on('bukus')
+            ->on('buku')
             ->onDelete('cascade');
 
     });

@@ -21,20 +21,16 @@ class PeminjamanManualController extends Controller
                 $q->whereHas('user', function ($u) use ($request) {
 
                     $u->where('name', 'like', '%' . $request->search . '%')
-                      ->orWhere('id_register', 'like', '%' . $request->search . '%');
-
+                        ->orWhere('id_register', 'like', '%' . $request->search . '%');
                 })
 
-                ->orWhereHas('buku', function ($b) use ($request) {
+                    ->orWhereHas('buku', function ($b) use ($request) {
 
-                    $b->where('judul', 'like', '%' . $request->search . '%');
+                        $b->where('judul', 'like', '%' . $request->search . '%');
+                    })
 
-                })
-
-                ->orWhere('status', 'like', '%' . $request->search . '%');
-
+                    ->orWhere('status', 'like', '%' . $request->search . '%');
             });
-
         }
 
         $pinjam = $query->latest()->paginate(10);
@@ -49,7 +45,7 @@ class PeminjamanManualController extends Controller
         return view('peminjaman-manual.create', compact('buku'));
     }
 
-        public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'id_register' => 'required',
@@ -98,13 +94,13 @@ class PeminjamanManualController extends Controller
         return view('peminjaman-manual.show', compact('pinjam'));
     }
 
-        public function edit($id)
-        {
-            $peminjaman = Pinjam::with('user', 'buku')->findOrFail($id);
-            $buku = Buku::all();
+    public function edit($id)
+    {
+        $peminjaman = Pinjam::with('user', 'buku')->findOrFail($id);
+        $buku = Buku::all();
 
-            return view('peminjaman-manual.edit', compact('peminjaman', 'buku'));
-        }
+        return view('peminjaman-manual.edit', compact('peminjaman', 'buku'));
+    }
 
     public function update(Request $request, $id)
     {
@@ -160,7 +156,7 @@ class PeminjamanManualController extends Controller
             ->with('success', 'Data berhasil dihapus.');
     }
 
-        public function trash()
+    public function trash()
     {
         $pinjam = Pinjam::onlyTrashed()
             ->with(['buku', 'user.kelas'])
@@ -203,7 +199,6 @@ class PeminjamanManualController extends Controller
                 'status' => false,
                 'message' => 'Member tidak ditemukan.'
             ]);
-
         }
 
         return response()->json([

@@ -292,7 +292,7 @@
                                 <input type="number"
                                     name="durasi_pinjam"
                                     class="form-control @error('durasi_pinjam') is-invalid @enderror"
-                                    value="{{ old('durasi_pinjam',7) }}"
+                                    value="{{ old('durasi_pinjam',1) }}"
                                     min="1"
                                     required>
                                 @error('durasi_pinjam')

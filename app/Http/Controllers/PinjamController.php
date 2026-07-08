@@ -17,7 +17,6 @@ class PinjamController extends Controller
         if (auth()->user()->role != 'admin') {
 
             $query->where('user_id', auth()->id());
-
         }
 
         // SEARCH
@@ -29,19 +28,15 @@ class PinjamController extends Controller
 
                     $u->where('name', 'like', '%' . $request->search . '%')
                         ->orWhere('id_register', 'like', '%' . $request->search . '%');
-
                 })
 
-                ->orWhereHas('buku', function ($b) use ($request) {
+                    ->orWhereHas('buku', function ($b) use ($request) {
 
-                    $b->where('judul', 'like', '%' . $request->search . '%');
+                        $b->where('judul', 'like', '%' . $request->search . '%');
+                    })
 
-                })
-
-                ->orWhere('status', 'like', '%' . $request->search . '%');
-
+                    ->orWhere('status', 'like', '%' . $request->search . '%');
             });
-
         }
 
         $pinjam = $query->latest()->get();
@@ -69,7 +64,6 @@ class PinjamController extends Controller
         if ($request->jumlah > $buku->stok) {
 
             return back()->with('error', 'Jumlah melebihi stok tersedia');
-
         }
 
         Pinjam::create([
@@ -94,12 +88,11 @@ class PinjamController extends Controller
         return view('pinjam.show', compact('pinjam'));
     }
 
-        public function setujui($id)
+    public function setujui($id)
     {
         if (auth()->user()->role != 'admin') {
 
             abort(403);
-
         }
 
         $pinjam = Pinjam::findOrFail($id);
@@ -107,13 +100,11 @@ class PinjamController extends Controller
         if ($pinjam->status != 'pending') {
 
             return back()->with('error', 'Status peminjaman tidak valid.');
-
         }
 
         if ($pinjam->buku->stok < $pinjam->jumlah) {
 
             return back()->with('error', 'Stok buku tidak mencukupi.');
-
         }
 
         $pinjam->update([
@@ -131,14 +122,12 @@ class PinjamController extends Controller
         if (auth()->user()->role != 'admin') {
 
             abort(403);
-
         }
 
         $pinjam = Pinjam::findOrFail($id);
         if ($pinjam->status != 'dipinjam') {
 
             return back()->with('error', 'Buku tidak sedang dipinjam.');
-
         }
 
         $today = Carbon::now();
@@ -176,12 +165,11 @@ class PinjamController extends Controller
             ->with('success', 'Data berhasil dihapus.');
     }
 
-        public function trashed()
+    public function trashed()
     {
         if (auth()->user()->role != 'admin') {
 
             abort(403);
-
         }
 
         $pinjam = Pinjam::onlyTrashed()
@@ -197,7 +185,6 @@ class PinjamController extends Controller
         if (auth()->user()->role != 'admin') {
 
             abort(403);
-
         }
 
         $pinjam = Pinjam::onlyTrashed()->findOrFail($id);
@@ -213,7 +200,6 @@ class PinjamController extends Controller
         if (auth()->user()->role != 'admin') {
 
             abort(403);
-
         }
 
         $pinjam = Pinjam::onlyTrashed()->findOrFail($id);
@@ -231,7 +217,6 @@ class PinjamController extends Controller
         if ($pinjam->status != 'pending') {
 
             return back()->with('error', 'Peminjaman tidak dapat dibatalkan.');
-
         }
 
         $pinjam->update([

@@ -31,9 +31,9 @@ class BukuImport implements ToModel, WithHeadingRow
             'pengarang' => $row['pengarang'],
             'penerbit' => $row['penerbit'],
             'tahun_terbit' => $row['tahun_terbit'],
-            'stok' => $row['stok'],
             'kategori_id' => $kategori->id,
             'rak_id' => $rak->id,
+            'stok' => $row['stok'],
         ]);
     }
 }

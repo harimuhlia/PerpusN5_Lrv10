@@ -23,14 +23,21 @@
                         <i class="fas fa-trash"></i> Trash
                     </a>
 
-                    <label class="btn btn-success btn-sm mb-0">
-                        <i class="fas fa-folder-open"></i> Import Excel
-                        <input type="file"
-                            name="file"
-                            id="file"
-                            hidden
-                            onchange="this.form.submit()">
-                    </label>
+                    <form action="{{ route('buku.import') }}"
+      method="POST"
+      enctype="multipart/form-data"
+      style="display:inline;">
+    @csrf
+
+    <label class="btn btn-success btn-sm mb-0">
+        <i class="fas fa-folder-open"></i> Import Excel
+        <input type="file"
+               name="file"
+               hidden
+               accept=".xlsx,.xls"
+               onchange="this.form.submit()">
+    </label>
+</form>
                 </div>
             </div>
             <div class="card-body">

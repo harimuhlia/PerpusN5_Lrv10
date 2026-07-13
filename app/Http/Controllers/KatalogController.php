@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Buku;
-use App\Models\Peminjaman;
+use App\Models\Pinjam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,7 +58,7 @@ class KatalogController extends Controller
 
         }
 
-        Peminjaman::create([
+        Pinjam::create([
             'user_id' => Auth::id(),
             'buku_id' => $buku->id,
             'tanggal_pinjam' => now(),

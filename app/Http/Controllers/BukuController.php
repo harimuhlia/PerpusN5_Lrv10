@@ -31,7 +31,7 @@ class BukuController extends Controller
                         });
                     })
                     ->latest()
-                    ->paginate(10);
+                    ->get();
 
         return view('buku.index', compact('buku'));
     }
